@@ -6,9 +6,7 @@
   <meta name="theme-color" content="#003366">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="My Timetable">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23003366' width='100' height='100'/%3E%3Ctext x='50' y='70' font-size='55' text-anchor='middle' fill='white'%3E📚%3C/text%3E%3C/svg%3E">
-  <title>My Timetable - GBHSS Sindhri</title>
+  <title>Teacher Timetable - GBHSS Sindhri</title>
   <style>
     * {
       margin: 0;
@@ -18,88 +16,84 @@
     }
     body {
       font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4f8;
+      background: #f5f7fc;
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+    }
+    /* App Container */
+    .app-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #f5f7fc;
       min-height: 100vh;
     }
-    /* App Header */
+    /* Header */
     .app-header {
       background: linear-gradient(135deg, #003366, #0055a4);
       color: white;
       padding: 20px 16px;
       text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    .app-header h1 { font-size: 1.3rem; }
+    .app-header h1 { font-size: 1.2rem; }
     .app-header p { font-size: 0.7rem; opacity: 0.8; margin-top: 4px; }
-    /* Install Banner */
-    .install-banner {
-      background: #ff9800;
-      color: #003366;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .install-banner button {
-      background: #003366;
-      color: white;
-      border: none;
-      padding: 6px 16px;
-      border-radius: 50px;
-      font-weight: bold;
-    }
     /* Teacher Card */
     .teacher-card {
       background: white;
       margin: 16px;
-      padding: 20px;
-      border-radius: 28px;
+      padding: 16px;
+      border-radius: 24px;
       text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     .teacher-avatar {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       background: #003366;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 12px;
-      font-size: 40px;
+      margin: 0 auto 10px;
+      font-size: 30px;
       color: white;
     }
-    .teacher-name {
-      font-size: 1.4rem;
-      font-weight: bold;
+    .teacher-name { font-size: 1.2rem; font-weight: bold; color: #003366; }
+    .teacher-id { font-size: 0.7rem; color: #666; margin-top: 4px; }
+    /* Selection Box - Chota aur Mobile Friendly */
+    .select-box {
+      background: white;
+      margin: 0 16px 16px 16px;
+      padding: 8px 12px;
+      border-radius: 50px;
+      border: 1px solid #e0e0e0;
+      width: calc(100% - 32px);
+      font-size: 0.9rem;
       color: #003366;
-    }
-    .teacher-id {
-      color: #666;
-      font-size: 0.8rem;
-      margin-top: 4px;
+      font-weight: 500;
+      text-align: center;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003366' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px;
     }
     /* Tab Bar */
     .tab-bar {
       display: flex;
       background: white;
       margin: 0 16px;
-      border-radius: 60px;
+      border-radius: 50px;
       padding: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      gap: 4px;
     }
     .tab {
       flex: 1;
       text-align: center;
-      padding: 12px 0;
-      border-radius: 60px;
+      padding: 10px 0;
+      border-radius: 50px;
       font-weight: 600;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: 0.3s;
       color: #666;
@@ -108,213 +102,211 @@
       background: #003366;
       color: white;
     }
-    /* Content Panels */
+    /* Panels */
     .panel {
       display: none;
       padding: 16px;
-      animation: fadeIn 0.3s;
+      animation: fadeIn 0.2s;
     }
-    .panel.active-panel {
-      display: block;
-    }
+    .panel.active-panel { display: block; }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    /* Today Card */
+    /* Today Header */
     .today-header {
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
-      padding: 20px;
-      border-radius: 24px;
+      padding: 16px;
+      border-radius: 20px;
       margin-bottom: 16px;
     }
-    .today-date {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
+    .today-date { font-size: 1rem; font-weight: bold; }
     .current-period {
       background: #ff9800;
       color: #003366;
-      padding: 12px;
-      border-radius: 20px;
-      margin-top: 12px;
+      padding: 10px;
+      border-radius: 16px;
+      margin-top: 10px;
       font-weight: bold;
+      font-size: 0.85rem;
+      text-align: center;
     }
     /* Period List */
     .period-list {
       background: white;
-      border-radius: 24px;
+      border-radius: 20px;
       overflow: hidden;
     }
     .period-item {
       display: flex;
       align-items: center;
-      padding: 14px 16px;
+      padding: 12px;
       border-bottom: 1px solid #eee;
-      gap: 12px;
+      gap: 10px;
     }
     .period-time {
-      min-width: 80px;
+      min-width: 70px;
       background: #e8f0fe;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 16px;
+      font-size: 0.65rem;
       font-weight: bold;
       text-align: center;
     }
     .period-info { flex: 1; }
-    .period-subject { font-weight: bold; color: #003366; }
-    .period-class { font-size: 0.7rem; color: #666; }
+    .period-subject { font-weight: bold; color: #003366; font-size: 0.85rem; }
+    .period-class { font-size: 0.65rem; color: #666; }
     .current-period-item {
       background: #fff3e0;
-      border-left: 4px solid #ff9800;
+      border-left: 3px solid #ff9800;
     }
     /* Week Grid */
     .week-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
     .day-card {
       background: white;
-      border-radius: 20px;
+      border-radius: 18px;
       overflow: hidden;
     }
     .day-header {
       background: #003366;
       color: white;
-      padding: 12px 16px;
+      padding: 10px 14px;
       font-weight: bold;
+      font-size: 0.85rem;
     }
-    /* Attendance Button */
+    /* Attendance */
     .attendance-btn {
       background: #1a7431;
       color: white;
       border: none;
-      padding: 14px;
+      padding: 12px;
       border-radius: 50px;
       font-weight: bold;
       width: 100%;
       margin-top: 16px;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
     }
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
+    .stat-card {
+      background: #f0f4f8;
+      padding: 12px;
+      border-radius: 16px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-around;
-      padding: 10px 16px;
-      border-top: 1px solid #eee;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
     }
-    .nav-item {
-      text-align: center;
-      padding: 8px;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .nav-item.active {
-      background: #003366;
-      color: white;
-    }
-    .nav-icon { font-size: 24px; display: block; }
-    .nav-label { font-size: 10px; margin-top: 2px; }
-    /* Padding for bottom nav */
-    .content-with-nav {
-      padding-bottom: 80px;
-    }
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 80px;
-      left: 20px;
-      right: 20px;
-      background: #1a7431;
-      color: white;
-      padding: 12px;
-      border-radius: 50px;
-      text-align: center;
-      z-index: 1000;
-      display: none;
-    }
+    .stat { text-align: center; }
+    .stat-number { font-size: 1.5rem; font-weight: bold; color: #003366; }
+    .stat-label { font-size: 0.7rem; color: #666; }
     /* No Data */
     .no-data {
       text-align: center;
-      padding: 40px;
+      padding: 30px;
       color: #999;
+      font-size: 0.85rem;
     }
     /* Settings */
     .setting-item {
       background: white;
       padding: 15px;
-      border-radius: 20px;
+      border-radius: 18px;
       margin-bottom: 12px;
     }
-    select, input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 50px;
-      border: 1px solid #ddd;
-      margin-top: 8px;
-    }
+    .setting-item h3 { font-size: 1rem; margin-bottom: 10px; color: #003366; }
     button {
       background: #003366;
       color: white;
       border: none;
-      padding: 12px;
+      padding: 10px;
       border-radius: 50px;
       font-weight: bold;
       cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      font-size: 0.85rem;
     }
+    .logout-btn { background: #dc3545; }
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: #1a7431;
+      color: white;
+      padding: 10px;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 0.8rem;
+      z-index: 1000;
+      display: none;
+    }
+    /* Install Banner */
+    .install-banner {
+      background: #ff9800;
+      color: #003366;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin: 8px 16px;
+      border-radius: 50px;
+    }
+    .install-banner button {
+      background: #003366;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 50px;
+      width: auto;
+      margin: 0;
+      font-size: 0.7rem;
+    }
+    /* Hide scrollbar but keep functionality */
+    ::-webkit-scrollbar { width: 3px; }
   </style>
 </head>
 <body>
+<div class="app-container">
+  <div class="app-header">
+    <h1>🏫 GBHSS Sindhri</h1>
+    <p>Teacher Timetable Portal</p>
+  </div>
 
-<!-- App Header -->
-<div class="app-header">
-  <h1>🏫 GBHSS Sindhri</h1>
-  <p>Teacher Timetable Portal</p>
-</div>
+  <!-- Install Banner -->
+  <div id="installBanner" class="install-banner" style="display: none;">
+    <span>📱 Install App</span>
+    <button id="installBtn">Install</button>
+  </div>
 
-<!-- Install Banner (for PWA) -->
-<div id="installBanner" class="install-banner" style="display: none;">
-  <span>📱 Install App for easy access</span>
-  <button id="installBtn">Install</button>
-</div>
-
-<!-- Main Content -->
-<div id="mainContent">
   <!-- Login Screen -->
   <div id="loginScreen">
-    <div class="teacher-card" style="margin-top: 30px;">
+    <div class="teacher-card">
       <div class="teacher-avatar">👨‍🏫</div>
       <div class="teacher-name">Teacher Login</div>
-      <div class="teacher-id">Select your name to continue</div>
-      <select id="teacherNameSelect" style="margin: 20px 0;">
+      <div class="teacher-id">Select your name</div>
+      <select id="teacherNameSelect" class="select-box" style="margin-top: 16px;">
         <option value="">-- Select Teacher --</option>
       </select>
-      <button id="loginBtn">Login →</button>
-      <p style="font-size: 12px; color: #666; margin-top: 20px;">⭐ After login, app will remember you</p>
+      <button id="loginBtn" style="margin-top: 12px;">Login →</button>
     </div>
   </div>
 
-  <!-- Main App (after login) -->
+  <!-- Main App -->
   <div id="mainApp" style="display: none;">
-    <!-- Teacher Info Card -->
     <div class="teacher-card">
       <div class="teacher-avatar" id="avatarIcon">👨‍🏫</div>
       <div class="teacher-name" id="displayTeacherName">Loading...</div>
       <div class="teacher-id" id="displayTeacherId">ID: ---</div>
     </div>
 
-    <!-- Tab Bar -->
     <div class="tab-bar">
       <div class="tab active" data-tab="today">⭐ Today</div>
       <div class="tab" data-tab="week">📅 Week</div>
@@ -340,8 +332,7 @@
     <!-- Attendance Panel -->
     <div id="attendancePanel" class="panel">
       <div class="teacher-card">
-        <h3>📊 My Attendance Record</h3>
-        <div id="attendanceStats"></div>
+        <div class="stat-card" id="attendanceStats"></div>
         <div id="attendanceList"></div>
       </div>
     </div>
@@ -349,17 +340,18 @@
     <!-- Profile Panel -->
     <div id="profilePanel" class="panel">
       <div class="setting-item">
-        <h3>👤 Profile Info</h3>
+        <h3>👤 Profile</h3>
         <p><strong>Name:</strong> <span id="profileName"></span></p>
         <p><strong>Employee ID:</strong> <span id="profileId"></span></p>
-        <hr style="margin: 15px 0;">
-        <h3>⚙️ Settings</h3>
-        <label>🔔 Reminders</label>
-        <input type="checkbox" id="reminderToggle" checked style="width: auto; margin-left: 10px;">
-        <br><br>
-        <button id="logoutBtn">🚪 Logout</button>
-        <button id="clearDataBtn" style="background: #dc3545; margin-top: 10px;">🗑️ Clear My Data</button>
       </div>
+      <div class="setting-item">
+        <h3>⚙️ Settings</h3>
+        <label style="display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" id="reminderToggle" checked> 🔔 Enable Reminders
+        </label>
+      </div>
+      <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      <button id="clearDataBtn" style="background: #dc3545; margin-top: 8px;">🗑️ Clear My Data</button>
     </div>
   </div>
 </div>
@@ -367,7 +359,7 @@
 <div id="toast" class="toast"></div>
 
 <script>
-  // ==================== TEACHERS DATA (Excel se exactly) ====================
+  // ==================== ALL 14 TEACHERS WITH COMPLETE DATA ====================
   const TEACHERS_LIST = [
     "Mr. Mir Muhammad", "Mr. Tahal Das", "Mr. M.Akram", "Mr. Ab Qayoom",
     "Ms. Fareha Banagash", "Mr. Aamir Ali", "Mr. Khushhal", "Mr. Nazeer Ali",
@@ -375,110 +367,54 @@
     "Mr. Imran Khan", "Mr. M Siddique"
   ];
 
-  // Timetable Data (Simplified for teacher view - per teacher per day period)
-  const TIMETABLE = {
-    "Mr. Mir Muhammad": {
-      "Monday": {1:"Phys X",2:"",3:"",4:"",5:"Phys X",6:"",7:"",8:"Phys X"},
-      "Tuesday": {1:"",2:"",3:"",4:"",5:"Phys IX",6:"",7:"",8:""},
-      "Wednesday": {1:"",2:"",3:"",4:"Phys IX",5:"",6:"",7:"",8:"Phys X"},
-      "Thursday": {1:"",2:"",3:"",4:"",5:"Phys X",6:"",7:"",8:""},
-      "Friday": {1:"",2:"",3:"",4:"",5:"Phys IX",6:"",7:"",8:""},
-      "Saturday": {1:"",2:"",3:"",4:"Phys IX",5:"",6:"",7:"",8:"Phys X"}
-    },
-    "Mr. Tahal Das": {
-      "Monday": {1:"English X",2:"English X",3:"",4:"Math X",5:"Math IX",6:"Math X",7:"",8:""},
-      "Tuesday": {1:"English X",2:"English X",3:"",4:"Math IX",5:"",6:"Math X",7:"",8:""},
-      "Wednesday": {1:"",2:"",3:"",4:"Math X",5:"Math IX",6:"English X",7:"",8:""},
-      "Thursday": {1:"English X",2:"English X",3:"",4:"Math X",5:"Math IX",6:"",7:"",8:""},
-      "Friday": {1:"English X",2:"",3:"Math X",4:"",5:"",6:"",7:"",8:""},
-      "Saturday": {1:"",2:"",3:"",4:"Math X",5:"Math IX",6:"English X",7:"",8:""}
-    },
-    "Mr. M.Akram": {
-      "Monday": {1:"English IX",2:"English IX",3:"",4:"",5:"Math VIII",6:"",7:"",8:"Isalm IX"},
-      "Tuesday": {1:"English IX",2:"English IX",3:"",4:"",5:"Math VIII",6:"",7:"Islam IX",8:""},
-      "Wednesday": {1:"",2:"",3:"",4:"",5:"Math VIII",6:"English IX",7:"",8:"Islam IX"},
-      "Thursday": {1:"English IX",2:"English IX",3:"",4:"",5:"Math VIII",6:"",7:"",8:"Isalm IX"},
-      "Friday": {1:"English IX",2:"",3:"",4:"Islam IX",5:"",6:"",7:"",8:""},
-      "Saturday": {1:"",2:"",3:"",4:"",5:"Math VIII",6:"English IX",7:"",8:"Islam IX"}
-    },
-    "Mr. Ab Qayoom": {
-      "Monday": {1:"English VIII",2:"English VIII",3:"",4:"",5:"",6:"Sindhi VI",7:"",8:"P.S X"},
-      "Tuesday": {1:"English VIII",2:"English VIII",3:"",4:"",5:"",6:"",7:"P.S X",8:""},
-      "Wednesday": {1:"",2:"",3:"",4:"English VIII",5:"P.S X",6:"",7:"",8:"Sindhi VI"},
-      "Thursday": {1:"English VIII",2:"English VIII",3:"",4:"",5:"",6:"Sindhi VI",7:"",8:"P.S X"},
-      "Friday": {1:"English VIII",2:"",3:"",4:"P.S X",5:"",6:"",7:"",8:""},
-      "Saturday": {1:"",2:"",3:"",4:"English VIII",5:"P.S X",6:"",7:"",8:"Sindhi VI"}
-    },
-    "Ms. Fareha Banagash": {
-      "Monday": {1:"English VII",2:"English VII",3:"",4:"",5:"Urdu VII",6:"Urdu X",7:"",8:""},
-      "Tuesday": {1:"English VII",2:"English VII",3:"",4:"",5:"Urdu X",6:"Urdu VII",7:"",8:""},
-      "Wednesday": {1:"",2:"",3:"Urdu X",4:"English VII",5:"",6:"",7:"",8:""},
-      "Thursday": {1:"English VII",2:"English VII",3:"",4:"",5:"Urdu VII",6:"Urdu X",7:"",8:""},
-      "Friday": {1:"English VII",2:"",3:"",4:"Urdu VII",5:"",6:"",7:"",8:""},
-      "Saturday": {1:"",2:"",3:"Urdu X",4:"English VII",5:"",6:"",7:"",8:""}
-    },
-    "Mr. Aamir Ali": {
-      "Monday": {1:"English VI",2:"English VI",3:"",4:"",5:"Math VI",6:"",7:"Sindhi IX",8:""},
-      "Tuesday": {1:"English VI",2:"English VI",3:"",4:"",5:"",6:"",7:"Math VI",8:""},
-      "Wednesday": {1:"",2:"",3:"Sindhi IX",4:"English VI",5:"",6:"Math VI",7:"",8:""},
-      "Thursday": {1:"English VI",2:"English VI",3:"",4:"",5:"Math VI",6:"",7:"Sindhi IX",8:""},
-      "Friday": {1:"English VI",2:"",3:"Math VI",4:"",5:"",6:"",7:"",8:""},
-      "Saturday": {1:"",2:"",3:"Sindhi IX",4:"English VI",5:"",6:"Math VI",7:"",8:""}
-    }
+  // Complete Timetable for ALL Teachers (Based on Excel)
+  const FULL_TIMETABLE = {
+    "Mr. Mir Muhammad": { Monday: {5:"Phys X",8:"Phys X"}, Tuesday: {5:"Phys IX"}, Wednesday: {4:"Phys IX",8:"Phys X"}, Thursday: {5:"Phys X"}, Friday: {5:"Phys IX"}, Saturday: {4:"Phys IX",8:"Phys X"} },
+    "Mr. Tahal Das": { Monday: {1:"English X",2:"English X",4:"Math X",5:"Math IX",6:"Math X"}, Tuesday: {1:"English X",2:"English X",4:"Math IX",6:"Math X"}, Wednesday: {4:"Math X",5:"Math IX",6:"English X"}, Thursday: {1:"English X",2:"English X",4:"Math X",5:"Math IX"}, Friday: {1:"English X",3:"Math X"}, Saturday: {4:"Math X",5:"Math IX",6:"English X"} },
+    "Mr. M.Akram": { Monday: {1:"English IX",2:"English IX",5:"Math VIII",8:"Isalm IX"}, Tuesday: {1:"English IX",2:"English IX",5:"Math VIII",7:"Islam IX"}, Wednesday: {5:"Math VIII",6:"English IX",8:"Islam IX"}, Thursday: {1:"English IX",2:"English IX",5:"Math VIII",8:"Isalm IX"}, Friday: {1:"English IX",4:"Islam IX"}, Saturday: {5:"Math VIII",6:"English IX",8:"Islam IX"} },
+    "Mr. Ab Qayoom": { Monday: {1:"English VIII",2:"English VIII",6:"Sindhi VI",8:"P.S X"}, Tuesday: {1:"English VIII",2:"English VIII",7:"P.S X"}, Wednesday: {4:"English VIII",5:"P.S X",8:"Sindhi VI"}, Thursday: {1:"English VIII",2:"English VIII",6:"Sindhi VI",8:"P.S X"}, Friday: {1:"English VIII",4:"P.S X"}, Saturday: {4:"English VIII",5:"P.S X",8:"Sindhi VI"} },
+    "Ms. Fareha Banagash": { Monday: {1:"English VII",2:"English VII",5:"Urdu VII",6:"Urdu X"}, Tuesday: {1:"English VII",2:"English VII",5:"Urdu X",6:"Urdu VII"}, Wednesday: {3:"Urdu X",4:"English VII"}, Thursday: {1:"English VII",2:"English VII",5:"Urdu VII",6:"Urdu X"}, Friday: {1:"English VII",4:"Urdu VII"}, Saturday: {3:"Urdu X",4:"English VII"} },
+    "Mr. Aamir Ali": { Monday: {1:"English VI",2:"English VI",5:"Math VI",7:"Sindhi IX"}, Tuesday: {1:"English VI",2:"English VI",7:"Math VI"}, Wednesday: {3:"Sindhi IX",4:"English VI",6:"Math VI"}, Thursday: {1:"English VI",2:"English VI",5:"Math VI",7:"Sindhi IX"}, Friday: {1:"English VI",3:"Math VI"}, Saturday: {3:"Sindhi IX",4:"English VI",6:"Math VI"} },
+    "Mr. Khushhal": { Monday: {3:"Science VI",6:"Scinece VIII",8:"S.S VIII"}, Tuesday: {3:"Science VIII",5:"Science VI",6:"S.S VIII"}, Wednesday: {1:"Science VI",2:"Science VI",6:"Science VIII"}, Thursday: {3:"Science VI",6:"Scinece VIII",8:"S.S VIII"}, Friday: {2:"Scinece VIII",4:"Scince VI"}, Saturday: {1:"Science VI",2:"Science VI",6:"Science VIII"} },
+    "Mr. Nazeer Ali": { Monday: {4:"Drw VIII",8:"Drw VI"}, Tuesday: {7:"Sindhi VIII"}, Wednesday: {2:"Drw VIII"}, Thursday: {4:"Drw VIII",8:"Drw VI"}, Friday: {5:"Drw VII"}, Saturday: {2:"Drw VIII"} },
+    "Mr. Dileep": { Monday: {3:"Bio IX",6:"Comp IX"}, Tuesday: {6:"Bio IX"}, Wednesday: {1:"Bio X",2:"Comp X",7:"Bio IX"}, Thursday: {3:"Bio IX",6:"Comp IX"}, Friday: {2:"Bio IX",3:"Comp IX"}, Saturday: {1:"Bio X",2:"Comp X",7:"Bio IX"} },
+    "Mr. Sadam": { Monday: {4:"Sindhi VII",7:"Islam VII"}, Tuesday: {3:"Sindhi VII",8:"Islam VIII"}, Wednesday: {3:"Comp VI",6:"Comp VII",8:"Comp VIII"}, Thursday: {4:"Sindhi VII",6:"Comp VII"}, Friday: {2:"Islam VII"}, Saturday: {3:"Comp VI"} },
+    "Mr. Hemoon": { Monday: {3:"Chem X",4:"Chem IX",7:""}, Tuesday: {4:"Chem X",7:"Math VII"}, Wednesday: {1:"Chem IX",2:"Chem IX",7:"Chem X"}, Thursday: {3:"Chem X",4:"Chem IX"}, Friday: {2:"Chem X",5:"Chem X"}, Saturday: {1:"Chem IX",2:"Chem IX",7:"Chem X"} },
+    "Mr. Bilawal": { Monday: {3:"Urdu VIII",7:"Scinece VII"}, Tuesday: {3:"Urdu VI",8:"W.S IX"}, Wednesday: {1:"Science VII",2:"Scinece VII"}, Thursday: {3:"Urdu VIII",7:"Scinece VII"}, Friday: {5:"W.S VIII"}, Saturday: {1:"Science VII",2:"W.S VII"} },
+    "Mr. Imran Khan": { Monday: {3:"Arabic VII",7:"Arabic VIII"}, Tuesday: {6:"Arabic VI",8:"Arabic VII"}, Wednesday: {3:"Arabic VIII",7:"Arabic VII"}, Thursday: {3:"Arabic VII",7:"Arabic VIII"}, Friday: {3:"Arabic VIII"}, Saturday: {3:"Arabic VIII",7:"Arabic VII"} },
+    "Mr. M Siddique": { Monday: {4:"S.S VI",7:"Islam VI"}, Tuesday: {5:"S.S VII",8:"S.S VI"}, Wednesday: {3:"S.S VII",5:"S.S VI",8:"S.S VII"}, Thursday: {4:"S.S VI",7:"Islam VI"}, Friday: {5:"S.S VI"}, Saturday: {3:"S.S VII",5:"S.S VI",8:"S.S VII"} }
   };
 
-  // Add default empty schedules for other teachers
+  // Ensure all teachers have at least empty objects for all days
+  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   for (let teacher of TEACHERS_LIST) {
-    if (!TIMETABLE[teacher]) {
-      TIMETABLE[teacher] = {};
-      let days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-      for (let day of days) {
-        TIMETABLE[teacher][day] = {};
-        for (let p=1; p<=8; p++) TIMETABLE[teacher][day][p] = "";
-      }
+    if (!FULL_TIMETABLE[teacher]) FULL_TIMETABLE[teacher] = {};
+    for (let day of DAYS) {
+      if (!FULL_TIMETABLE[teacher][day]) FULL_TIMETABLE[teacher][day] = {};
     }
   }
 
-  const PERIOD_TIMINGS = {
-    1: "08:40-09:40", 2: "08:40-09:40", 3: "09:40-10:20", 4: "10:20-11:00",
-    5: "11:30-12:00", 6: "12:00-12:30", 7: "12:30-13:00", 8: "13:00-13:30"
-  };
-  const FRIDAY_TIMINGS = {
-    1: "08:30-09:10", 2: "09:10-09:50", 3: "09:50-10:30", 4: "11:00-11:30", 5: "11:30-12:00"
-  };
+  const PERIOD_TIMINGS = {1:"08:40-09:40",2:"08:40-09:40",3:"09:40-10:20",4:"10:20-11:00",5:"11:30-12:00",6:"12:00-12:30",7:"12:30-13:00",8:"13:00-13:30"};
+  const FRIDAY_TIMINGS = {1:"08:30-09:10",2:"09:10-09:50",3:"09:50-10:30",4:"11:00-11:30",5:"11:30-12:00"};
 
   let currentTeacher = null;
   let attendance = {};
 
-  function loadAttendance() {
-    let saved = localStorage.getItem(`attendance_${currentTeacher}`);
-    if (saved) attendance = JSON.parse(saved);
-    else attendance = {};
-  }
-  function saveAttendance() {
-    localStorage.setItem(`attendance_${currentTeacher}`, JSON.stringify(attendance));
-  }
-
-  function getTodayName() {
-    let days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-    return days[new Date().getDay()];
-  }
+  function loadAttendance() { let saved = localStorage.getItem(`att_${currentTeacher}`); if(saved) attendance = JSON.parse(saved); else attendance = {}; }
+  function saveAttendance() { localStorage.setItem(`att_${currentTeacher}`, JSON.stringify(attendance)); }
+  function getTodayName() { return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][new Date().getDay()]; }
   function isFriday() { return getTodayName() === "Friday"; }
-  function getTiming(period) {
-    return isFriday() ? (FRIDAY_TIMINGS[period] || PERIOD_TIMINGS[period]) : PERIOD_TIMINGS[period];
-  }
+  function getTiming(p) { return isFriday() ? (FRIDAY_TIMINGS[p] || PERIOD_TIMINGS[p]) : PERIOD_TIMINGS[p]; }
+
   function getCurrentPeriod() {
-    let now = new Date();
-    let currMin = now.getHours()*60 + now.getMinutes();
+    let now = new Date(), currMin = now.getHours()*60 + now.getMinutes();
     for (let p=1; p<=8; p++) {
       let timing = getTiming(p);
       if (!timing) continue;
       let [start, end] = timing.split('-');
       if (!start || !end) continue;
-      let [sh,sm] = start.split(':');
-      let [eh,em] = end.split(':');
-      let startMin = parseInt(sh)*60+parseInt(sm);
-      let endMin = parseInt(eh)*60+parseInt(em);
+      let [sh,sm] = start.split(':'), [eh,em] = end.split(':');
+      let startMin = parseInt(sh)*60+parseInt(sm), endMin = parseInt(eh)*60+parseInt(em);
       if (currMin >= startMin && currMin < endMin) return p;
     }
     return null;
@@ -488,7 +424,7 @@
     let today = getTodayName();
     document.getElementById("todayDate").innerHTML = `${today}, ${new Date().toLocaleDateString()}`;
     let current = getCurrentPeriod();
-    let schedule = TIMETABLE[currentTeacher]?.[today] || {};
+    let schedule = FULL_TIMETABLE[currentTeacher]?.[today] || {};
     let html = '';
     for (let p=1; p<=8; p++) {
       let timing = getTiming(p);
@@ -499,7 +435,7 @@
         <div class="period-time">${timing}</div>
         <div class="period-info">
           <div class="period-subject">${subject}</div>
-          <div class="period-class">Period ${p} ${isCurrent ? '● CURRENT' : ''}</div>
+          <div class="period-class">Period ${p} ${isCurrent ? '● NOW' : ''}</div>
         </div>
       </div>`;
     }
@@ -511,7 +447,7 @@
     let days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     let html = '<div class="week-grid">';
     for (let day of days) {
-      let schedule = TIMETABLE[currentTeacher]?.[day] || {};
+      let schedule = FULL_TIMETABLE[currentTeacher]?.[day] || {};
       html += `<div class="day-card"><div class="day-header">📅 ${day}</div><div class="period-list">`;
       let hasClass = false;
       for (let p=1; p<=8; p++) {
@@ -531,41 +467,32 @@
 
   function renderAttendance() {
     loadAttendance();
-    let totalDays = Object.keys(attendance).length;
+    let total = Object.keys(attendance).length;
     let thisMonth = new Date().getMonth();
     let monthCount = Object.keys(attendance).filter(d => new Date(d).getMonth() === thisMonth).length;
+    let weekCount = Object.keys(attendance).filter(d => new Date(d) > new Date(Date.now()-7*86400000)).length;
     document.getElementById("attendanceStats").innerHTML = `
-      <p><strong>Total Present:</strong> ${totalDays} days</p>
-      <p><strong>This Month:</strong> ${monthCount} days</p>
-      <p><strong>Last 7 days:</strong> ${Object.keys(attendance).filter(d => new Date(d) > new Date(Date.now()-7*86400000)).length} days</p>
+      <div class="stat"><div class="stat-number">${total}</div><div class="stat-label">Total Days</div></div>
+      <div class="stat"><div class="stat-number">${monthCount}</div><div class="stat-label">This Month</div></div>
+      <div class="stat"><div class="stat-number">${weekCount}</div><div class="stat-label">Last 7 Days</div></div>
     `;
-    let listHtml = '<h3>Recent Attendance</h3><div class="period-list">';
+    let listHtml = '<div class="period-list">';
     let sorted = Object.keys(attendance).sort().reverse().slice(0,10);
-    for (let date of sorted) {
-      listHtml += `<div class="period-item"><div class="period-info">✅ ${date} - Present at ${attendance[date]}</div></div>`;
-    }
+    for (let date of sorted) listHtml += `<div class="period-item"><div class="period-info">✅ ${date} - ${attendance[date]}</div></div>`;
     listHtml += '</div>';
-    document.getElementById("attendanceList").innerHTML = listHtml;
+    document.getElementById("attendanceList").innerHTML = listHtml || '<div class="no-data">No attendance records</div>';
   }
 
   function markAttendance() {
     let today = new Date().toISOString().split('T')[0];
-    if (attendance[today]) {
-      showToast("✅ Already marked attendance today!");
-      return;
-    }
+    if (attendance[today]) { showToast("✅ Already marked today!"); return; }
     attendance[today] = new Date().toLocaleTimeString();
     saveAttendance();
     showToast(`✅ Attendance marked for ${today}`);
     renderAttendance();
   }
 
-  function showToast(msg) {
-    let toast = document.getElementById("toast");
-    toast.innerText = msg;
-    toast.style.display = "block";
-    setTimeout(() => toast.style.display = "none", 2000);
-  }
+  function showToast(msg) { let t = document.getElementById("toast"); t.innerText = msg; t.style.display = "block"; setTimeout(() => t.style.display = "none", 2000); }
 
   function switchTab(tabId) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active-panel'));
@@ -588,9 +515,9 @@
     let isFemale = currentTeacher.includes("Ms.");
     document.getElementById("avatarIcon").innerHTML = isFemale ? "👩‍🏫" : "👨‍🏫";
     let idx = TEACHERS_LIST.indexOf(currentTeacher)+1;
-    document.getElementById("displayTeacherId").innerHTML = `ID: TCH${idx.toString().padStart(3,'0')}`;
+    document.getElementById("displayTeacherId").innerHTML = `ID: TCH${idx}`;
     document.getElementById("profileName").innerText = currentTeacher;
-    document.getElementById("profileId").innerHTML = `TCH${idx.toString().padStart(3,'0')}`;
+    document.getElementById("profileId").innerHTML = `TCH${idx}`;
     loadAttendance();
     renderToday();
     renderWeek();
@@ -605,50 +532,28 @@
     document.getElementById("teacherNameSelect").value = "";
   }
 
-  function clearData() {
-    if (confirm("Are you sure? This will clear your attendance records.")) {
-      localStorage.removeItem(`attendance_${currentTeacher}`);
-      attendance = {};
-      showToast("Data cleared");
-      renderAttendance();
-    }
-  }
+  function clearData() { if(confirm("Clear your attendance records?")) { localStorage.removeItem(`att_${currentTeacher}`); attendance = {}; showToast("Data cleared"); renderAttendance(); } }
 
   function populateTeacherSelect() {
     let select = document.getElementById("teacherNameSelect");
     select.innerHTML = '<option value="">-- Select Teacher --</option>';
-    for (let t of TEACHERS_LIST) {
-      select.innerHTML += `<option value="${t}">${t}</option>`;
-    }
+    for (let t of TEACHERS_LIST) select.innerHTML += `<option value="${t}">${t}</option>`;
   }
 
-  // PWA Installation
+  // PWA Install
   let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('installBanner').style.display = 'flex';
-  });
-  document.getElementById('installBtn')?.addEventListener('click', () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => { document.getElementById('installBanner').style.display = 'none'; });
-    }
-  });
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('installBanner').style.display = 'flex'; });
+  document.getElementById('installBtn')?.addEventListener('click', () => { if(deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => document.getElementById('installBanner').style.display = 'none'); } });
 
   // Event Listeners
   document.getElementById("loginBtn")?.addEventListener("click", login);
   document.getElementById("logoutBtn")?.addEventListener("click", logout);
   document.getElementById("clearDataBtn")?.addEventListener("click", clearData);
   document.getElementById("markAttendanceBtn")?.addEventListener("click", markAttendance);
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => switchTab(tab.getAttribute('data-tab')));
-  });
-  document.getElementById("reminderToggle")?.addEventListener("change", (e) => {
-    localStorage.setItem("reminders", e.target.checked);
-  });
+  document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchTab(tab.getAttribute('data-tab'))));
+  document.getElementById("reminderToggle")?.addEventListener("change", (e) => localStorage.setItem("reminders", e.target.checked));
 
-  // Check saved login
+  // Auto login if saved
   let saved = localStorage.getItem("savedTeacher");
   if (saved && TEACHERS_LIST.includes(saved)) {
     currentTeacher = saved;
@@ -658,9 +563,9 @@
     let isFemale = currentTeacher.includes("Ms.");
     document.getElementById("avatarIcon").innerHTML = isFemale ? "👩‍🏫" : "👨‍🏫";
     let idx = TEACHERS_LIST.indexOf(currentTeacher)+1;
-    document.getElementById("displayTeacherId").innerHTML = `ID: TCH${idx.toString().padStart(3,'0')}`;
+    document.getElementById("displayTeacherId").innerHTML = `ID: TCH${idx}`;
     document.getElementById("profileName").innerText = currentTeacher;
-    document.getElementById("profileId").innerHTML = `TCH${idx.toString().padStart(3,'0')}`;
+    document.getElementById("profileId").innerHTML = `TCH${idx}`;
     loadAttendance();
     renderToday();
     renderWeek();
@@ -668,7 +573,7 @@
   }
 
   populateTeacherSelect();
-  setInterval(() => { if (currentTeacher) renderToday(); }, 60000);
+  setInterval(() => { if(currentTeacher) renderToday(); }, 60000);
 </script>
 </body>
 </html>
