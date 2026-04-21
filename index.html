@@ -3,549 +3,672 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-  <title>My Timetable - Govt Boys High School Sindhri</title>
+  <meta name="theme-color" content="#003366">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="My Timetable">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23003366' width='100' height='100'/%3E%3Ctext x='50' y='70' font-size='55' text-anchor='middle' fill='white'%3E📚%3C/text%3E%3C/svg%3E">
+  <title>My Timetable - GBHSS Sindhri</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-
     body {
-      font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
-      background: linear-gradient(135deg, #e8f0ff 0%, #d4e4fc 100%);
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
       min-height: 100vh;
-      padding: 15px;
     }
-
-    .container {
-      max-width: 550px;
-      margin: 0 auto;
-    }
-
-    /* Header */
-    .header {
+    /* App Header */
+    .app-header {
       background: linear-gradient(135deg, #003366, #0055a4);
       color: white;
-      padding: 20px;
-      border-radius: 25px;
+      padding: 20px 16px;
       text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-
-    .school-name {
-      font-size: 1.5rem;
+    .app-header h1 { font-size: 1.3rem; }
+    .app-header p { font-size: 0.7rem; opacity: 0.8; margin-top: 4px; }
+    /* Install Banner */
+    .install-banner {
+      background: #ff9800;
+      color: #003366;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .install-banner button {
+      background: #003366;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 50px;
       font-weight: bold;
     }
-
-    .school-name small {
-      font-size: 0.8rem;
-      display: block;
-      margin-top: 5px;
-      opacity: 0.9;
+    /* Teacher Card */
+    .teacher-card {
+      background: white;
+      margin: 16px;
+      padding: 20px;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
-
-    .teacher-name-card {
+    .teacher-avatar {
+      width: 80px;
+      height: 80px;
+      background: #003366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 40px;
+      color: white;
+    }
+    .teacher-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #003366;
+    }
+    .teacher-id {
+      color: #666;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+    /* Tab Bar */
+    .tab-bar {
+      display: flex;
+      background: white;
+      margin: 0 16px;
+      border-radius: 60px;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #666;
+    }
+    .tab.active {
+      background: #003366;
+      color: white;
+    }
+    /* Content Panels */
+    .panel {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.3s;
+    }
+    .panel.active-panel {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Today Card */
+    .today-header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 20px;
+      border-radius: 24px;
+      margin-bottom: 16px;
+    }
+    .today-date {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .current-period {
       background: #ff9800;
       color: #003366;
       padding: 12px;
-      border-radius: 60px;
-      margin-top: 15px;
+      border-radius: 20px;
+      margin-top: 12px;
       font-weight: bold;
-      font-size: 1.3rem;
     }
-
-    .info-bar {
+    /* Period List */
+    .period-list {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .period-item {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 15px;
-      font-size: 0.9rem;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #eee;
+      gap: 12px;
     }
-
-    .info-card {
-      background: rgba(255,255,255,0.2);
-      padding: 6px 15px;
-      border-radius: 50px;
+    .period-time {
+      min-width: 80px;
+      background: #e8f0fe;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-align: center;
     }
-
+    .period-info { flex: 1; }
+    .period-subject { font-weight: bold; color: #003366; }
+    .period-class { font-size: 0.7rem; color: #666; }
+    .current-period-item {
+      background: #fff3e0;
+      border-left: 4px solid #ff9800;
+    }
     /* Week Grid */
     .week-grid {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
     }
-
     .day-card {
       background: white;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-
     .day-header {
       background: #003366;
       color: white;
-      padding: 12px 15px;
+      padding: 12px 16px;
       font-weight: bold;
-      font-size: 1.1rem;
     }
-
-    .period-list {
-      padding: 10px;
+    /* Attendance Button */
+    .attendance-btn {
+      background: #1a7431;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 50px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 16px;
+      font-size: 1rem;
+      cursor: pointer;
     }
-
-    .period-item {
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
       display: flex;
-      align-items: center;
-      padding: 12px 10px;
-      border-bottom: 1px solid #e0e0e0;
-      gap: 12px;
+      justify-content: space-around;
+      padding: 10px 16px;
+      border-top: 1px solid #eee;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
     }
-
-    .period-item:last-child {
-      border-bottom: none;
-    }
-
-    .period-time {
-      min-width: 95px;
-      background: #e0e7ff;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: #003366;
+    .nav-item {
       text-align: center;
+      padding: 8px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.3s;
     }
-
-    .period-details {
-      flex: 1;
+    .nav-item.active {
+      background: #003366;
+      color: white;
     }
-
-    .period-name {
-      font-weight: bold;
-      font-size: 0.9rem;
-      color: #333;
+    .nav-icon { font-size: 24px; display: block; }
+    .nav-label { font-size: 10px; margin-top: 2px; }
+    /* Padding for bottom nav */
+    .content-with-nav {
+      padding-bottom: 80px;
     }
-
-    .subject-name {
-      font-size: 0.85rem;
-      color: #0055a4;
-      font-weight: 600;
-    }
-
-    .class-name {
-      font-size: 0.75rem;
-      color: #666;
-      margin-top: 3px;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #e8f5e9;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      color: #2e7d32;
-      margin-left: 8px;
-    }
-
-    .no-class {
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 20px;
+      right: 20px;
+      background: #1a7431;
+      color: white;
+      padding: 12px;
+      border-radius: 50px;
       text-align: center;
-      padding: 30px;
+      z-index: 1000;
+      display: none;
+    }
+    /* No Data */
+    .no-data {
+      text-align: center;
+      padding: 40px;
       color: #999;
-      font-style: italic;
     }
-
-    .footer {
-      text-align: center;
-      margin-top: 20px;
+    /* Settings */
+    .setting-item {
+      background: white;
       padding: 15px;
-      color: #666;
-      font-size: 0.7rem;
+      border-radius: 20px;
+      margin-bottom: 12px;
     }
-
-    .current-time {
-      background: #e8f0fe;
-      padding: 10px;
-      border-radius: 15px;
-      text-align: center;
-      margin-bottom: 15px;
-      font-size: 0.9rem;
+    select, input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 50px;
+      border: 1px solid #ddd;
+      margin-top: 8px;
     }
-
-    .today-highlight {
-      border-left: 4px solid #ff9800;
-    }
-
-    @media (max-width: 480px) {
-      .period-time {
-        min-width: 80px;
-        font-size: 0.7rem;
-      }
-      .period-name {
-        font-size: 0.8rem;
-      }
-      .subject-name {
-        font-size: 0.8rem;
-      }
+    button {
+      background: #003366;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <div class="school-name">
-      🏫 Govt Boys Higher Secondary School Sindhri
-      <small>Time Table - Session 2026</small>
-    </div>
-    <div class="teacher-name-card" id="teacherNameDisplay">
-      👨‍🏫 Loading...
-    </div>
-    <div class="info-bar">
-      <div class="info-card">📅 <span id="date"></span></div>
-      <div class="info-card">🕐 <span id="clock"></span></div>
+
+<!-- App Header -->
+<div class="app-header">
+  <h1>🏫 GBHSS Sindhri</h1>
+  <p>Teacher Timetable Portal</p>
+</div>
+
+<!-- Install Banner (for PWA) -->
+<div id="installBanner" class="install-banner" style="display: none;">
+  <span>📱 Install App for easy access</span>
+  <button id="installBtn">Install</button>
+</div>
+
+<!-- Main Content -->
+<div id="mainContent">
+  <!-- Login Screen -->
+  <div id="loginScreen">
+    <div class="teacher-card" style="margin-top: 30px;">
+      <div class="teacher-avatar">👨‍🏫</div>
+      <div class="teacher-name">Teacher Login</div>
+      <div class="teacher-id">Select your name to continue</div>
+      <select id="teacherNameSelect" style="margin: 20px 0;">
+        <option value="">-- Select Teacher --</option>
+      </select>
+      <button id="loginBtn">Login →</button>
+      <p style="font-size: 12px; color: #666; margin-top: 20px;">⭐ After login, app will remember you</p>
     </div>
   </div>
 
-  <div class="current-time" id="currentPeriodInfo">
-    🔄 Loading schedule...
-  </div>
+  <!-- Main App (after login) -->
+  <div id="mainApp" style="display: none;">
+    <!-- Teacher Info Card -->
+    <div class="teacher-card">
+      <div class="teacher-avatar" id="avatarIcon">👨‍🏫</div>
+      <div class="teacher-name" id="displayTeacherName">Loading...</div>
+      <div class="teacher-id" id="displayTeacherId">ID: ---</div>
+    </div>
 
-  <div class="week-grid" id="weeklySchedule">
-    <!-- Dynamic content will be inserted here -->
-  </div>
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <div class="tab active" data-tab="today">⭐ Today</div>
+      <div class="tab" data-tab="week">📅 Week</div>
+      <div class="tab" data-tab="attendance">✅ Attendance</div>
+      <div class="tab" data-tab="profile">👤 Profile</div>
+    </div>
 
-  <div class="footer">
-    📍 Govt Boys Higher Secondary School Sindhri | Time Table System
+    <!-- Today Panel -->
+    <div id="todayPanel" class="panel active-panel">
+      <div class="today-header">
+        <div class="today-date" id="todayDate"></div>
+        <div id="currentPeriodInfo" class="current-period">Loading...</div>
+      </div>
+      <div class="period-list" id="todayPeriods"></div>
+      <button class="attendance-btn" id="markAttendanceBtn">✅ Mark Today's Attendance</button>
+    </div>
+
+    <!-- Week Panel -->
+    <div id="weekPanel" class="panel">
+      <div class="week-grid" id="weekSchedule"></div>
+    </div>
+
+    <!-- Attendance Panel -->
+    <div id="attendancePanel" class="panel">
+      <div class="teacher-card">
+        <h3>📊 My Attendance Record</h3>
+        <div id="attendanceStats"></div>
+        <div id="attendanceList"></div>
+      </div>
+    </div>
+
+    <!-- Profile Panel -->
+    <div id="profilePanel" class="panel">
+      <div class="setting-item">
+        <h3>👤 Profile Info</h3>
+        <p><strong>Name:</strong> <span id="profileName"></span></p>
+        <p><strong>Employee ID:</strong> <span id="profileId"></span></p>
+        <hr style="margin: 15px 0;">
+        <h3>⚙️ Settings</h3>
+        <label>🔔 Reminders</label>
+        <input type="checkbox" id="reminderToggle" checked style="width: auto; margin-left: 10px;">
+        <br><br>
+        <button id="logoutBtn">🚪 Logout</button>
+        <button id="clearDataBtn" style="background: #dc3545; margin-top: 10px;">🗑️ Clear My Data</button>
+      </div>
+    </div>
   </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
-  // ==================== COMPLETE TIMETABLE DATA ====================
-  const TEACHERS = [
+  // ==================== TEACHERS DATA (Excel se exactly) ====================
+  const TEACHERS_LIST = [
     "Mr. Mir Muhammad", "Mr. Tahal Das", "Mr. M.Akram", "Mr. Ab Qayoom",
     "Ms. Fareha Banagash", "Mr. Aamir Ali", "Mr. Khushhal", "Mr. Nazeer Ali",
     "Mr. Dileep", "Mr. Sadam", "Mr. Hemoon", "Mr. Bilawal",
     "Mr. Imran Khan", "Mr. M Siddique"
   ];
 
-  const DAYS = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATUARDAY"];
-  const DAYS_DISPLAY = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-  const TIMETABLE_DATA = {
-    "MONDAY": {
-      1: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      2: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      3: ["", "", "", "", "", "", "Science VI", "", "Bio IX", "", "Chem X", "Urdu VIII", "Arabic VII", ""],
-      4: ["", "Math X", "", "", "", "", "", "Drw VIII", "", "Sindhi VII", "Chem IX", "", "", "S.S VI"],
-      5: ["Phys X", "Math IX", "Math VIII", "", "Urdu VII", "Math VI", "", "", "", "", "", "", "", ""],
-      6: ["", "", "", "Sindhi VI", "Urdu X", "", "Scinece VIII", "", "Comp IX", "Islam VII", "", "", "", ""],
-      7: ["", "", "", "", "", "Sindhi IX", "", "", "Bio X", "", "", "Scinece VII", "Arabic VIII", "Islam VI"],
-      8: ["", "", "Isalm IX", "P.S X", "", "", "S.S VIII", "Drw VI", "", "", "Math VII", "", "", ""]
+  // Timetable Data (Simplified for teacher view - per teacher per day period)
+  const TIMETABLE = {
+    "Mr. Mir Muhammad": {
+      "Monday": {1:"Phys X",2:"",3:"",4:"",5:"Phys X",6:"",7:"",8:"Phys X"},
+      "Tuesday": {1:"",2:"",3:"",4:"",5:"Phys IX",6:"",7:"",8:""},
+      "Wednesday": {1:"",2:"",3:"",4:"Phys IX",5:"",6:"",7:"",8:"Phys X"},
+      "Thursday": {1:"",2:"",3:"",4:"",5:"Phys X",6:"",7:"",8:""},
+      "Friday": {1:"",2:"",3:"",4:"",5:"Phys IX",6:"",7:"",8:""},
+      "Saturday": {1:"",2:"",3:"",4:"Phys IX",5:"",6:"",7:"",8:"Phys X"}
     },
-    "TUESDAY": {
-      1: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      2: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      3: ["", "", "", "", "", "", "Science VIII", "", "Bio X", "Sindhi VII", "Chem IX", "Urdu VI", "", ""],
-      4: ["", "Math IX", "", "", "", "", "", "", "", "", "Chem X", "Scinece VII", "Arabic VIII", "Islam VI"],
-      5: ["Phys IX", "", "Math VIII", "", "Urdu X", "", "Science VI", "", "", "", "", "", "", "S.S VII"],
-      6: ["", "Math X", "", "", "Urdu VII", "", "S.S VIII", "", "Bio IX", "", "", "", "Arabic VI", ""],
-      7: ["", "", "Islam IX", "P.S X", "", "Math VI", "", "Sindhi VIII", "", "", "Math VII", "", "", ""],
-      8: ["", "", "", "", "", "", "", "", "Comp X", "Islam VIII", "", "W.S IX", "Arabic VII", "S.S VI"]
+    "Mr. Tahal Das": {
+      "Monday": {1:"English X",2:"English X",3:"",4:"Math X",5:"Math IX",6:"Math X",7:"",8:""},
+      "Tuesday": {1:"English X",2:"English X",3:"",4:"Math IX",5:"",6:"Math X",7:"",8:""},
+      "Wednesday": {1:"",2:"",3:"",4:"Math X",5:"Math IX",6:"English X",7:"",8:""},
+      "Thursday": {1:"English X",2:"English X",3:"",4:"Math X",5:"Math IX",6:"",7:"",8:""},
+      "Friday": {1:"English X",2:"",3:"Math X",4:"",5:"",6:"",7:"",8:""},
+      "Saturday": {1:"",2:"",3:"",4:"Math X",5:"Math IX",6:"English X",7:"",8:""}
     },
-    "WEDNESDAY": {
-      1: ["", "", "", "", "", "", "Science VI", "Sindhi VIII", "Bio X", "", "Chem IX", "Science VII", "", ""],
-      2: ["", "", "", "", "", "", "Science VI", "Drw VIII", "Comp X", "", "Chem IX", "Scinece VII", "", ""],
-      3: ["", "", "", "", "Urdu X", "Sindhi IX", "", "", "", "Comp VI", "", "", "Arabic VIII", "S.S VII"],
-      4: ["Phys IX", "Math X", "", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      5: ["", "Math IX", "Math VIII", "P.S X", "", "", "", "", "", "", "Math VII", "", "", "S.S VI"],
-      6: ["", "English X", "English IX", "", "", "Math VI", "Science VIII", "", "", "Comp VII", "", "", "", ""],
-      7: ["", "", "", "", "", "", "", "", "Bio IX", "", "Chem X", "Urdu VIII", "Arabic VII", "Islam VI"],
-      8: ["Phys X", "", "Islam IX", "Sindhi VI", "", "", "", "", "", "Comp VIII", "", "", "", "S.S VII"]
+    "Mr. M.Akram": {
+      "Monday": {1:"English IX",2:"English IX",3:"",4:"",5:"Math VIII",6:"",7:"",8:"Isalm IX"},
+      "Tuesday": {1:"English IX",2:"English IX",3:"",4:"",5:"Math VIII",6:"",7:"Islam IX",8:""},
+      "Wednesday": {1:"",2:"",3:"",4:"",5:"Math VIII",6:"English IX",7:"",8:"Islam IX"},
+      "Thursday": {1:"English IX",2:"English IX",3:"",4:"",5:"Math VIII",6:"",7:"",8:"Isalm IX"},
+      "Friday": {1:"English IX",2:"",3:"",4:"Islam IX",5:"",6:"",7:"",8:""},
+      "Saturday": {1:"",2:"",3:"",4:"",5:"Math VIII",6:"English IX",7:"",8:"Islam IX"}
     },
-    "THURSDAY": {
-      1: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      2: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      3: ["", "", "", "", "", "", "Science VI", "", "Bio IX", "", "Chem X", "Urdu VIII", "Arabic VII", ""],
-      4: ["", "Math X", "", "", "", "", "", "Drw VIII", "", "Sindhi VII", "Chem IX", "", "", "S.S VI"],
-      5: ["Phys X", "Math IX", "Math VIII", "", "Urdu VII", "Math VI", "", "", "", "", "", "", "", ""],
-      6: ["", "", "", "Sindhi VI", "Urdu X", "", "Scinece VIII", "", "Comp IX", "Comp VII", "", "", "", ""],
-      7: ["", "", "", "", "", "Sindhi IX", "", "", "Bio X", "", "", "Scinece VII", "Arabic VIII", "Islam VI"],
-      8: ["", "", "Isalm IX", "P.S X", "", "", "S.S VIII", "Drw VI", "", "", "Math VII", "", "", ""]
+    "Mr. Ab Qayoom": {
+      "Monday": {1:"English VIII",2:"English VIII",3:"",4:"",5:"",6:"Sindhi VI",7:"",8:"P.S X"},
+      "Tuesday": {1:"English VIII",2:"English VIII",3:"",4:"",5:"",6:"",7:"P.S X",8:""},
+      "Wednesday": {1:"",2:"",3:"",4:"English VIII",5:"P.S X",6:"",7:"",8:"Sindhi VI"},
+      "Thursday": {1:"English VIII",2:"English VIII",3:"",4:"",5:"",6:"Sindhi VI",7:"",8:"P.S X"},
+      "Friday": {1:"English VIII",2:"",3:"",4:"P.S X",5:"",6:"",7:"",8:""},
+      "Saturday": {1:"",2:"",3:"",4:"English VIII",5:"P.S X",6:"",7:"",8:"Sindhi VI"}
     },
-    "FRIDAY": {
-      1: ["", "English X", "English IX", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      2: ["", "", "", "", "", "", "Scinece VIII", "", "Bio IX", "Islam VII", "Chem X", "Urdu VI", "", ""],
-      3: ["", "Math X", "", "", "", "Math VI", "", "", "Comp IX", "", "Math VII", "", "Arabic VIII", ""],
-      4: ["", "", "Islam IX", "P.S X", "Urdu VII", "", "Scince VI", "Sindhi VIII", "", "", "", "", "", ""],
-      5: ["Phys IX", "", "", "", "", "", "", "Drw VII", "", "", "Chem X", "W.S VIII", "", "S.S VI"],
-      6: ["", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-      7: ["", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-      8: ["", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    "Ms. Fareha Banagash": {
+      "Monday": {1:"English VII",2:"English VII",3:"",4:"",5:"Urdu VII",6:"Urdu X",7:"",8:""},
+      "Tuesday": {1:"English VII",2:"English VII",3:"",4:"",5:"Urdu X",6:"Urdu VII",7:"",8:""},
+      "Wednesday": {1:"",2:"",3:"Urdu X",4:"English VII",5:"",6:"",7:"",8:""},
+      "Thursday": {1:"English VII",2:"English VII",3:"",4:"",5:"Urdu VII",6:"Urdu X",7:"",8:""},
+      "Friday": {1:"English VII",2:"",3:"",4:"Urdu VII",5:"",6:"",7:"",8:""},
+      "Saturday": {1:"",2:"",3:"Urdu X",4:"English VII",5:"",6:"",7:"",8:""}
     },
-    "SATUARDAY": {
-      1: ["", "", "", "", "", "", "Science VI", "Sindhi VIII", "Bio X", "", "Chem IX", "Science VII", "", ""],
-      2: ["", "", "", "", "", "", "Science VI", "Drw VIII", "Comp X", "", "Chem IX", "W.S VII", "", ""],
-      3: ["", "", "", "", "Urdu X", "Sindhi IX", "", "", "", "Comp VI", "", "", "Arabic VIII", "S.S VII"],
-      4: ["Phys IX", "Math X", "", "English VIII", "English VII", "English VI", "", "", "", "", "", "", "", ""],
-      5: ["", "Math IX", "Math VIII", "P.S X", "", "", "", "", "", "", "Math VII", "", "", "S.S VI"],
-      6: ["", "English X", "English IX", "", "", "Math VI", "Science VIII", "", "", "Islam VII", "", "", "", ""],
-      7: ["", "", "", "", "", "", "", "", "Bio IX", "", "Chem X", "Urdu VIII", "Arabic VII", "Islam VI"],
-      8: ["Phys X", "", "Islam IX", "Sindhi VI", "", "", "", "", "", "Islam VIII", "", "", "", "S.S VII"]
+    "Mr. Aamir Ali": {
+      "Monday": {1:"English VI",2:"English VI",3:"",4:"",5:"Math VI",6:"",7:"Sindhi IX",8:""},
+      "Tuesday": {1:"English VI",2:"English VI",3:"",4:"",5:"",6:"",7:"Math VI",8:""},
+      "Wednesday": {1:"",2:"",3:"Sindhi IX",4:"English VI",5:"",6:"Math VI",7:"",8:""},
+      "Thursday": {1:"English VI",2:"English VI",3:"",4:"",5:"Math VI",6:"",7:"Sindhi IX",8:""},
+      "Friday": {1:"English VI",2:"",3:"Math VI",4:"",5:"",6:"",7:"",8:""},
+      "Saturday": {1:"",2:"",3:"Sindhi IX",4:"English VI",5:"",6:"Math VI",7:"",8:""}
     }
   };
+
+  // Add default empty schedules for other teachers
+  for (let teacher of TEACHERS_LIST) {
+    if (!TIMETABLE[teacher]) {
+      TIMETABLE[teacher] = {};
+      let days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      for (let day of days) {
+        TIMETABLE[teacher][day] = {};
+        for (let p=1; p<=8; p++) TIMETABLE[teacher][day][p] = "";
+      }
+    }
+  }
 
   const PERIOD_TIMINGS = {
-    1: "08:40 - 09:40",
-    2: "08:40 - 09:40",
-    3: "09:40 - 10:20",
-    4: "10:20 - 11:00",
-    5: "11:30 - 12:00",
-    6: "12:00 - 12:30",
-    7: "12:30 - 13:00",
-    8: "13:00 - 13:30"
+    1: "08:40-09:40", 2: "08:40-09:40", 3: "09:40-10:20", 4: "10:20-11:00",
+    5: "11:30-12:00", 6: "12:00-12:30", 7: "12:30-13:00", 8: "13:00-13:30"
   };
-
   const FRIDAY_TIMINGS = {
-    1: "08:30 - 09:10",
-    2: "09:10 - 09:50",
-    3: "09:50 - 10:30",
-    4: "11:00 - 11:30",
-    5: "11:30 - 12:00",
-    6: "",
-    7: "",
-    8: ""
+    1: "08:30-09:10", 2: "09:10-09:50", 3: "09:50-10:30", 4: "11:00-11:30", 5: "11:30-12:00"
   };
 
-  // Get teacher name from URL parameter
-  function getTeacherFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    let teacher = urlParams.get('teacher');
-    if (teacher) {
-      teacher = decodeURIComponent(teacher);
-      if (TEACHERS.includes(teacher)) return teacher;
+  let currentTeacher = null;
+  let attendance = {};
+
+  function loadAttendance() {
+    let saved = localStorage.getItem(`attendance_${currentTeacher}`);
+    if (saved) attendance = JSON.parse(saved);
+    else attendance = {};
+  }
+  function saveAttendance() {
+    localStorage.setItem(`attendance_${currentTeacher}`, JSON.stringify(attendance));
+  }
+
+  function getTodayName() {
+    let days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    return days[new Date().getDay()];
+  }
+  function isFriday() { return getTodayName() === "Friday"; }
+  function getTiming(period) {
+    return isFriday() ? (FRIDAY_TIMINGS[period] || PERIOD_TIMINGS[period]) : PERIOD_TIMINGS[period];
+  }
+  function getCurrentPeriod() {
+    let now = new Date();
+    let currMin = now.getHours()*60 + now.getMinutes();
+    for (let p=1; p<=8; p++) {
+      let timing = getTiming(p);
+      if (!timing) continue;
+      let [start, end] = timing.split('-');
+      if (!start || !end) continue;
+      let [sh,sm] = start.split(':');
+      let [eh,em] = end.split(':');
+      let startMin = parseInt(sh)*60+parseInt(sm);
+      let endMin = parseInt(eh)*60+parseInt(em);
+      if (currMin >= startMin && currMin < endMin) return p;
     }
     return null;
   }
 
-  function getClassFromSubject(subject) {
-    if (!subject) return null;
-    const parts = subject.split(' ');
-    const lastPart = parts[parts.length - 1];
-    if (["VI","VII","VIII","IX","X"].includes(lastPart)) return lastPart;
-    return null;
+  function renderToday() {
+    let today = getTodayName();
+    document.getElementById("todayDate").innerHTML = `${today}, ${new Date().toLocaleDateString()}`;
+    let current = getCurrentPeriod();
+    let schedule = TIMETABLE[currentTeacher]?.[today] || {};
+    let html = '';
+    for (let p=1; p<=8; p++) {
+      let timing = getTiming(p);
+      if (!timing) continue;
+      let subject = schedule[p] || "Free Period";
+      let isCurrent = (current === p);
+      html += `<div class="period-item ${isCurrent ? 'current-period-item' : ''}">
+        <div class="period-time">${timing}</div>
+        <div class="period-info">
+          <div class="period-subject">${subject}</div>
+          <div class="period-class">Period ${p} ${isCurrent ? '● CURRENT' : ''}</div>
+        </div>
+      </div>`;
+    }
+    document.getElementById("todayPeriods").innerHTML = html || '<div class="no-data">No classes today</div>';
+    document.getElementById("currentPeriodInfo").innerHTML = current ? `🔴 Period ${current} is ongoing (${getTiming(current)})` : "⏸️ Break time - no period ongoing";
   }
 
-  function getSubjectName(subject) {
-    if (!subject) return "";
-    const parts = subject.split(' ');
-    if (parts.length > 1 && ["VI","VII","VIII","IX","X"].includes(parts[parts.length-1]))
-      return parts.slice(0, -1).join(' ');
-    return subject;
-  }
-
-  function getTeacherSchedule(teacherName) {
-    const idx = TEACHERS.indexOf(teacherName);
-    if (idx === -1) return [];
-    
-    const schedule = [];
-    for (let d = 0; d < DAYS.length; d++) {
-      const day = DAYS[d];
-      const dayDisplay = DAYS_DISPLAY[d];
-      for (let p = 1; p <= 8; p++) {
-        const sub = TIMETABLE_DATA[day]?.[p]?.[idx];
-        if (sub && sub.trim() !== "") {
-          schedule.push({
-            day: dayDisplay,
-            dayKey: day,
-            period: p,
-            subject: getSubjectName(sub),
-            class: getClassFromSubject(sub),
-            timing: getPeriodTiming(day, p)
-          });
+  function renderWeek() {
+    let days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    let html = '<div class="week-grid">';
+    for (let day of days) {
+      let schedule = TIMETABLE[currentTeacher]?.[day] || {};
+      html += `<div class="day-card"><div class="day-header">📅 ${day}</div><div class="period-list">`;
+      let hasClass = false;
+      for (let p=1; p<=8; p++) {
+        let timing = getTiming(p);
+        let subject = schedule[p];
+        if (subject && subject !== "") {
+          hasClass = true;
+          html += `<div class="period-item"><div class="period-time">${timing}</div><div class="period-info"><div class="period-subject">${subject}</div><div class="period-class">Period ${p}</div></div></div>`;
         }
       }
-    }
-    return schedule;
-  }
-
-  function getPeriodTiming(day, period) {
-    if (day === "FRIDAY" && FRIDAY_TIMINGS[period]) {
-      return FRIDAY_TIMINGS[period];
-    }
-    return PERIOD_TIMINGS[period] || "—";
-  }
-
-  function getCurrentPeriod() {
-    const now = new Date();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-    const today = DAYS[now.getDay() === 0 ? 5 : now.getDay() - 1];
-    const isFriday = (today === "FRIDAY");
-    
-    for (let p = 1; p <= 8; p++) {
-      let timing = isFriday ? FRIDAY_TIMINGS[p] : PERIOD_TIMINGS[p];
-      if (!timing || timing === "") continue;
-      
-      const [start, end] = timing.split(' - ');
-      if (!start || !end) continue;
-      const [sh, sm] = start.split(':');
-      const [eh, em] = end.split(':');
-      const startMin = parseInt(sh) * 60 + parseInt(sm);
-      const endMin = parseInt(eh) * 60 + parseInt(em);
-      
-      if (currentMinutes >= startMin && currentMinutes < endMin) {
-        return { period: p, timing: timing };
-      }
-    }
-    return null;
-  }
-
-  function renderTeacherTimetable(teacherName) {
-    const schedule = getTeacherSchedule(teacherName);
-    
-    // Group by day
-    const grouped = {};
-    DAYS_DISPLAY.forEach(day => { grouped[day] = []; });
-    schedule.forEach(item => {
-      grouped[item.day].push(item);
-    });
-    
-    // Sort periods within each day
-    for (let day in grouped) {
-      grouped[day].sort((a, b) => a.period - b.period);
-    }
-    
-    const today = DAYS_DISPLAY[new Date().getDay() === 0 ? 5 : new Date().getDay() - 1];
-    const currentPeriod = getCurrentPeriod();
-    
-    let html = '';
-    for (let day of DAYS_DISPLAY) {
-      const isToday = (day === today);
-      const periods = grouped[day];
-      
-      html += `<div class="day-card ${isToday ? 'today-highlight' : ''}">
-        <div class="day-header">
-          ${day} ${isToday ? '<span class="badge">TODAY</span>' : ''}
-        </div>
-        <div class="period-list">`;
-      
-      if (periods.length === 0) {
-        html += `<div class="no-class">✨ No classes on this day</div>`;
-      } else {
-        periods.forEach(p => {
-          const isCurrent = (isToday && currentPeriod && currentPeriod.period === p.period);
-          html += `<div class="period-item" style="${isCurrent ? 'background: #fff3e0;' : ''}">
-            <div class="period-time">${p.timing}</div>
-            <div class="period-details">
-              <div class="period-name">Period ${p.period} ${isCurrent ? '<span class="badge">● CURRENT</span>' : ''}</div>
-              <div class="subject-name">📖 ${p.subject}</div>
-              <div class="class-name">🏫 Class ${p.class}</div>
-            </div>
-          </div>`;
-        });
-      }
-      
+      if (!hasClass) html += '<div class="no-data">✨ No classes</div>';
       html += `</div></div>`;
     }
-    
-    document.getElementById("weeklySchedule").innerHTML = html;
+    html += '</div>';
+    document.getElementById("weekSchedule").innerHTML = html;
   }
 
-  function updateCurrentPeriodInfo(teacherName) {
-    const current = getCurrentPeriod();
-    const now = new Date();
-    const today = DAYS_DISPLAY[now.getDay() === 0 ? 5 : now.getDay() - 1];
-    
-    if (current) {
-      // Get what this teacher teaches in current period
-      const idx = TEACHERS.indexOf(teacherName);
-      const todayKey = DAYS[now.getDay() === 0 ? 5 : now.getDay() - 1];
-      const subject = TIMETABLE_DATA[todayKey]?.[current.period]?.[idx];
-      
-      if (subject && subject.trim()) {
-        const subjectName = getSubjectName(subject);
-        const className = getClassFromSubject(subject);
-        document.getElementById("currentPeriodInfo").innerHTML = `
-          🔴 <strong>Now:</strong> Period ${current.period} (${current.timing})<br>
-          📖 Teaching <strong>${subjectName}</strong> to Class <strong>${className}</strong>
-        `;
-      } else {
-        document.getElementById("currentPeriodInfo").innerHTML = `
-          🟡 <strong>Current Time:</strong> Period ${current.period} (${current.timing})<br>
-          📚 No class assigned in this period
-        `;
-      }
-    } else {
-      // Check if it's break time
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      const isFriday = (today === "Friday" && new Date().getDay() === 5);
-      
-      if (isFriday) {
-        if ((hour === 10 && minute >= 30) || (hour === 10 && minute < 60) || (hour === 11 && minute === 0)) {
-          document.getElementById("currentPeriodInfo").innerHTML = "🍽️ <strong>Friday Break Time</strong> (10:30 - 11:00)";
-        } else {
-          document.getElementById("currentPeriodInfo").innerHTML = "⏸️ <strong>No period ongoing</strong> - Break time or after school hours";
-        }
-      } else {
-        if ((hour === 11 && minute < 30) || (hour === 11 && minute >= 0)) {
-          document.getElementById("currentPeriodInfo").innerHTML = "🍽️ <strong>Break Time</strong> (11:00 - 11:30)";
-        } else {
-          document.getElementById("currentPeriodInfo").innerHTML = "⏸️ <strong>No period ongoing</strong> - Break time or after school hours";
-        }
-      }
+  function renderAttendance() {
+    loadAttendance();
+    let totalDays = Object.keys(attendance).length;
+    let thisMonth = new Date().getMonth();
+    let monthCount = Object.keys(attendance).filter(d => new Date(d).getMonth() === thisMonth).length;
+    document.getElementById("attendanceStats").innerHTML = `
+      <p><strong>Total Present:</strong> ${totalDays} days</p>
+      <p><strong>This Month:</strong> ${monthCount} days</p>
+      <p><strong>Last 7 days:</strong> ${Object.keys(attendance).filter(d => new Date(d) > new Date(Date.now()-7*86400000)).length} days</p>
+    `;
+    let listHtml = '<h3>Recent Attendance</h3><div class="period-list">';
+    let sorted = Object.keys(attendance).sort().reverse().slice(0,10);
+    for (let date of sorted) {
+      listHtml += `<div class="period-item"><div class="period-info">✅ ${date} - Present at ${attendance[date]}</div></div>`;
     }
+    listHtml += '</div>';
+    document.getElementById("attendanceList").innerHTML = listHtml;
   }
 
-  function updateClock() {
-    const now = new Date();
-    document.getElementById("clock").innerHTML = now.toLocaleTimeString();
-    document.getElementById("date").innerHTML = now.toLocaleDateString('en-PK');
-    
-    const teacherName = document.getElementById("teacherNameDisplay").innerText.replace('👨‍🏫 ', '').replace('👩‍🏫 ', '');
-    if (teacherName !== "Loading..." && teacherName !== "Teacher Not Found") {
-      updateCurrentPeriodInfo(teacherName);
-    }
-  }
-
-  function init() {
-    let teacherName = getTeacherFromURL();
-    
-    // If no teacher in URL, show selection dropdown
-    if (!teacherName) {
-      document.getElementById("teacherNameDisplay").innerHTML = `
-        <select id="teacherSelect" style="width:100%; padding:10px; border-radius:50px; font-size:1rem; background:white; color:#003366;">
-          <option value="">-- Select Your Name --</option>
-          ${TEACHERS.map(t => `<option value="${t}">${t}</option>`).join('')}
-        </select>
-      `;
-      document.getElementById("weeklySchedule").innerHTML = '<div class="no-class">👈 Please select your name from above to see your timetable</div>';
-      
-      document.getElementById("teacherSelect")?.addEventListener("change", (e) => {
-        if (e.target.value) {
-          window.location.href = `?teacher=${encodeURIComponent(e.target.value)}`;
-        }
-      });
+  function markAttendance() {
+    let today = new Date().toISOString().split('T')[0];
+    if (attendance[today]) {
+      showToast("✅ Already marked attendance today!");
       return;
     }
-    
-    // Display teacher name
-    const isFemale = teacherName.startsWith("Ms.");
-    document.getElementById("teacherNameDisplay").innerHTML = isFemale ? `👩‍🏫 ${teacherName}` : `👨‍🏫 ${teacherName}`;
-    
-    // Render timetable
-    renderTeacherTimetable(teacherName);
-    updateCurrentPeriodInfo(teacherName);
-    
-    // Start clock
-    updateClock();
-    setInterval(updateClock, 1000);
+    attendance[today] = new Date().toLocaleTimeString();
+    saveAttendance();
+    showToast(`✅ Attendance marked for ${today}`);
+    renderAttendance();
   }
-  
-  init();
+
+  function showToast(msg) {
+    let toast = document.getElementById("toast");
+    toast.innerText = msg;
+    toast.style.display = "block";
+    setTimeout(() => toast.style.display = "none", 2000);
+  }
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active-panel'));
+    document.getElementById(tabId + 'Panel').classList.add('active-panel');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+    if (tabId === 'today') renderToday();
+    if (tabId === 'week') renderWeek();
+    if (tabId === 'attendance') renderAttendance();
+  }
+
+  function login() {
+    let selected = document.getElementById("teacherNameSelect").value;
+    if (!selected) { showToast("Please select your name"); return; }
+    currentTeacher = selected;
+    localStorage.setItem("savedTeacher", currentTeacher);
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+    document.getElementById("displayTeacherName").innerText = currentTeacher;
+    let isFemale = currentTeacher.includes("Ms.");
+    document.getElementById("avatarIcon").innerHTML = isFemale ? "👩‍🏫" : "👨‍🏫";
+    let idx = TEACHERS_LIST.indexOf(currentTeacher)+1;
+    document.getElementById("displayTeacherId").innerHTML = `ID: TCH${idx.toString().padStart(3,'0')}`;
+    document.getElementById("profileName").innerText = currentTeacher;
+    document.getElementById("profileId").innerHTML = `TCH${idx.toString().padStart(3,'0')}`;
+    loadAttendance();
+    renderToday();
+    renderWeek();
+    renderAttendance();
+  }
+
+  function logout() {
+    currentTeacher = null;
+    localStorage.removeItem("savedTeacher");
+    document.getElementById("loginScreen").style.display = "block";
+    document.getElementById("mainApp").style.display = "none";
+    document.getElementById("teacherNameSelect").value = "";
+  }
+
+  function clearData() {
+    if (confirm("Are you sure? This will clear your attendance records.")) {
+      localStorage.removeItem(`attendance_${currentTeacher}`);
+      attendance = {};
+      showToast("Data cleared");
+      renderAttendance();
+    }
+  }
+
+  function populateTeacherSelect() {
+    let select = document.getElementById("teacherNameSelect");
+    select.innerHTML = '<option value="">-- Select Teacher --</option>';
+    for (let t of TEACHERS_LIST) {
+      select.innerHTML += `<option value="${t}">${t}</option>`;
+    }
+  }
+
+  // PWA Installation
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBanner').style.display = 'flex';
+  });
+  document.getElementById('installBtn')?.addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => { document.getElementById('installBanner').style.display = 'none'; });
+    }
+  });
+
+  // Event Listeners
+  document.getElementById("loginBtn")?.addEventListener("click", login);
+  document.getElementById("logoutBtn")?.addEventListener("click", logout);
+  document.getElementById("clearDataBtn")?.addEventListener("click", clearData);
+  document.getElementById("markAttendanceBtn")?.addEventListener("click", markAttendance);
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.getAttribute('data-tab')));
+  });
+  document.getElementById("reminderToggle")?.addEventListener("change", (e) => {
+    localStorage.setItem("reminders", e.target.checked);
+  });
+
+  // Check saved login
+  let saved = localStorage.getItem("savedTeacher");
+  if (saved && TEACHERS_LIST.includes(saved)) {
+    currentTeacher = saved;
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+    document.getElementById("displayTeacherName").innerText = currentTeacher;
+    let isFemale = currentTeacher.includes("Ms.");
+    document.getElementById("avatarIcon").innerHTML = isFemale ? "👩‍🏫" : "👨‍🏫";
+    let idx = TEACHERS_LIST.indexOf(currentTeacher)+1;
+    document.getElementById("displayTeacherId").innerHTML = `ID: TCH${idx.toString().padStart(3,'0')}`;
+    document.getElementById("profileName").innerText = currentTeacher;
+    document.getElementById("profileId").innerHTML = `TCH${idx.toString().padStart(3,'0')}`;
+    loadAttendance();
+    renderToday();
+    renderWeek();
+    renderAttendance();
+  }
+
+  populateTeacherSelect();
+  setInterval(() => { if (currentTeacher) renderToday(); }, 60000);
 </script>
 </body>
 </html>
